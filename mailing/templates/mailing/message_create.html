@@ -1,0 +1,22 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Добавить сообщение{% endblock %}
+
+{% block content %}
+<form method="post" class="mx-auto">
+    {% csrf_token %}
+    {{ form.media }}
+    <div class="mb-3 form-control">
+        <label class="text-white">Заголовок </label>
+        {{ form.title }}
+        {% if form.email.errors %}
+            <div class="text-danger">{{ form.email.errors|striptags }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">Наполнение </label>
+        <div>{{ form.body }}</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Подтвердить</button>
+</form>
+{% endblock %}

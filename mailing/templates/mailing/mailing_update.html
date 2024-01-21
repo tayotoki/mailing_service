@@ -1,0 +1,30 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Изменить рассылку{% endblock %}
+
+{% block content %}
+<form method="post" class="mx-auto">
+    {% csrf_token %}
+    <div class="mb-3 form-control">
+        <label class="text-white">Дата/время рассылки </label>
+        {{ form.time }}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">Статус рассылки после создания </label>
+        {{ form.status }}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">Периодичность рассылки </label>
+        {{ form.periodicity }}
+    </div>
+    <div class="mb-3 form-control text-white">
+        <label class="text-white">Выберите клиентов </label>
+        {{ form.clients }}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">Выберите сообщения </label>
+        {{ form.messages }}
+    </div>
+    <button type="submit" class="btn btn-primary">Подтвердить</button>
+</form>
+{% endblock %}

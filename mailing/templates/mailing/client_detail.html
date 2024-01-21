@@ -1,0 +1,15 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Просмотр клиента{% endblock %}
+
+{% block content %}
+    <div class="card mx-auto" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Клиент</h5>
+            <p class="card-text">Почта: {{ object.email }}</p>
+            <p class="card-text">ФИО: {{ object.fullname }}</p>
+            <p class="card-text">Комментарий: {{ object.comment }}</p>
+            <a href="{% url 'mailing:client-update' object.pk %}" class="btn btn-primary">Изменить</a>
+        </div>
+    </div>
+{% endblock %}

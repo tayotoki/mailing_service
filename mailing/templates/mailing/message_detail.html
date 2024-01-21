@@ -1,0 +1,16 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Просмотр сообщения{% endblock %}
+
+{% block content %}
+    <div class="card mx-auto" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Сообщение</h5>
+            <p class="card-text">Заголовок: {{ object.title }}</p>
+            <div class="card-text">Наполнение:
+                <p>{{ object.body|striptags }}</p>
+            </div>
+            <a href="{% url 'mailing:message-update' object.pk %}" class="btn btn-primary">Изменить</a>
+        </div>
+    </div>
+{% endblock %}
