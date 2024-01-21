@@ -1,0 +1,62 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Детали рассылки{% endblock %}
+
+{% block content %}
+    <div class="row mx-sm-auto">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Рассылка</h5>
+                    <p class="card-text">Время рассылки: {{ object.time }}</p>
+                    <p class="card-text">Периодичность: {{ object.get_periodicity_display }}</p>
+                    <p class="card-text">Следующая рассылка: {{ object.next_time }}</p>
+                    <a href="{% url 'mailing:mailing-update' object.pk %}" class="btn btn-primary">Изменить</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <p class="d-inline-flex gap-1">
+                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseClients" role="button"
+                           aria-expanded="false" aria-controls="collapseClients">
+                            Клиенты
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseClients">
+                        <div class="card card-body">
+                            {% for client in object.clients.all %}
+                                <a href="#">
+                                    <p class="card-text mt-0 mb-0">{{ client.fullname }}</p>
+                                    <p class="card-text mt-0 mb-0">({{ client.email }})</p>
+                                </a>
+                                <p class="card-text">...</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-2" style="width: 18rem;">
+                <div class="card-body">
+                    <p class="d-inline-flex gap-1">
+                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMessages" role="button"
+                           aria-expanded="false" aria-controls="collapseMessages">
+                            Сообщения
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseMessages">
+                        <div class="card card-body">
+                            {% for message in object.messages.all %}
+                                <a href="#">
+                                    <p class="card-text mt-0 mb-0">{{ message.title }}</p>
+                                </a>
+                                <p class="card-text">...</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

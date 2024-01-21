@@ -1,0 +1,15 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Сервис email-рассылок{% endblock %}
+
+{% block content %}
+<main class="px-3">
+    <h1>Общая статистика</h1>
+    <p class="lead">На сервисе уже {{ mailings_count }} рассылок</p>
+    <p class="lead">Из них {{ active_mailings_count }} активных</p>
+    <p class="lead">{{ unique_clients_count }} уникальных клиентов</p>
+    <p class="lead">
+      <a href="{% url 'mailing:mailing-create' %}" class="btn btn-lg btn-light fw-bold border-white bg-white">Создать рассылку</a>
+    </p>
+  </main>
+{% endblock %}

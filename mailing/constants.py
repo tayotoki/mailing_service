@@ -2,9 +2,9 @@ from django.db.models import TextChoices, IntegerChoices
 
 
 class MailingStatus(TextChoices):
-    COMPLETED = 'завершена'
-    CREATED = 'создана'
-    LAUNCHED = 'запущена'
+    COMPLETED = "completed", "завершена"
+    CREATED = "created", "создана"
+    LAUNCHED = "launched", "запущена"
 
 
 class MailingPeriodicity(IntegerChoices):

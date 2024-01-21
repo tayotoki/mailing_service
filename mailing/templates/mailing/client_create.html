@@ -1,0 +1,25 @@
+{% extends 'mailing/base.html' %}
+
+{% block page_name %}Добавить клиента{% endblock %}
+
+{% block content %}
+<form method="post" class="mx-auto">
+    {% csrf_token %}
+    <div class="mb-3 form-control">
+        <label class="text-white">Почта </label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="text-danger">{{ form.email.errors|striptags }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">ФИО </label>
+        {{ form.fullname }}
+    </div>
+    <div class="mb-3 form-control">
+        <label class="text-white">Комментарий </label>
+        <p>{{ form.comment }}</p>
+    </div>
+    <button type="submit" class="btn btn-primary">Подтвердить</button>
+</form>
+{% endblock %}
