@@ -1,0 +1,33 @@
+{% extends "mailing/base.html" %}
+
+% extends "mailing/base.html" %}
+
+{% block page_name %}
+    Войти
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="mx-auto">
+        {% csrf_token %}
+        <div class="mb-3 form-control">
+            <label class="text-white">Почта </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors|striptags }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3 form-control">
+            <label class="text-white">Пароль </label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="text-danger">{{ form.password.errors|striptags }}</div>
+            {% endif %}
+        </div>
+{#        <div class="mb-3 form-control">#}
+            <p class="form-text text-danger">{{ form.non_field_errors|striptags }}</p>
+{#        </div>#}
+
+        <button type="submit" class="btn btn-primary">Войти</button>
+        <p class="form-text text-light-emphasis mt-2">Еще нет профиля? <a href="{% url 'users:users-register' %}">Зарегистрироваться</a></p>
+    </form>
+{% endblock %}

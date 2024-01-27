@@ -1,0 +1,24 @@
+{% extends "mailing/base.html" %}
+
+% extends "mailing/base.html" %}
+
+{% block page_name %}
+    Подтверждение почты
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="mx-auto">
+        {% csrf_token %}
+        <div class="mb-3 form-control">
+            <label class="text-white">Код подтверждения </label>
+            <p class="mt-2">{{ form.code }}</p>
+            {% if form.code.errors %}
+                <div class="text-danger">{{ form.code.errors|striptags }}</div>
+            {% endif %}
+        {% if form.non_field_errors %}
+            <div class="text-danger">{{ form.non_field_errors|striptags }}</div>
+        {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+{% endblock %}

@@ -27,7 +27,7 @@
                     <div class="collapse" id="collapseClients">
                         <div class="card card-body">
                             {% for client in object.clients.all %}
-                                <a href="#">
+                                <a href="{% url 'mailing:client-detail' client.pk %}">
                                     <p class="card-text mt-0 mb-0">{{ client.fullname }}</p>
                                     <p class="card-text mt-0 mb-0">({{ client.email }})</p>
                                 </a>
@@ -48,7 +48,7 @@
                     <div class="collapse" id="collapseMessages">
                         <div class="card card-body">
                             {% for message in object.messages.all %}
-                                <a href="#">
+                                <a href="{% url 'mailing:message-detail' message.pk %}">
                                     <p class="card-text mt-0 mb-0">{{ message.title }}</p>
                                 </a>
                                 <p class="card-text">...</p>

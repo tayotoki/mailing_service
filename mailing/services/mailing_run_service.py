@@ -1,17 +1,33 @@
+import logging
 import threading
-from typing import Optional
+from collections.abc import Mapping, Sequence
+from typing import Optional, Any
 
 from django.core.mail import send_mail
 from django.db.models import F, QuerySet
 from django.utils import timezone
 
-from mailing.models import MailingSettings, MailLogger
+from ..models import MailingSettings, MailLogger, MailMessage
+from .decorators import keep_mail_backend_connection
 
 
-def send_email(clients, message, loggers) -> None:
+logger_ = logging.getLogger('mailing')
+
+
+@keep_mail_backend_connection
+def send_email(clients: Sequence[Mapping[str, Any]],
+               message: MailMessage,
+               loggers: Optional[list[MailLogger]] = None,
+               connection=None,
+               commit=False) -> None:
     """Отправка конкретного сообщения клиентам.
-    Создаются объекты-логгеры для каждого сообщения (без сохранения в БД)"""
+    Создаются объекты-логгеры для каждого сообщения.
+    Если commit=True - логгеры сохраняются в БД"""
+
     logger = MailLogger(time=timezone.now(), message=message, status="", mail_backend_response="")
+
+    if not loggers:
+        loggers = []
 
     try:
         send_mail(
@@ -19,6 +35,7 @@ def send_email(clients, message, loggers) -> None:
             message=message.body,
             from_email="mail_service@localhost",
             recipient_list=[client["email"] for client in clients],
+            connection=connection
         )
 
     except Exception as e:
@@ -31,13 +48,28 @@ def send_email(clients, message, loggers) -> None:
     finally:
         loggers.append(logger)
 
+    if commit:
+        MailLogger.objects.bulk_create(loggers)
 
-def start_mailing(ready_mailings: Optional[QuerySet] = None) -> None:
+    logger_.info(
+            f"[{logger.time}] "
+            f"message: {logger.message} | "
+            f"status: {logger.status} | "
+            f"response: {logger.mail_backend_response}"
+    )
+
+
+def start_mailing(ready_mailings: Optional[QuerySet[MailingSettings]] = None) -> None:
     """Запуск переданных рассылок.
-    Создаются записи базе данных для всех логгеров сообщений"""
+    Создаются записи в базе данных для всех логгеров сообщений"""
+
     if ready_mailings is None:
-        ready_mailings = MailingSettings.objects.ready_for_sending().prefetch_related(
-            "clients", "messages"
+        ready_mailings = (
+            MailingSettings.objects
+            .ready_for_sending()
+            .prefetch_related(
+                "clients", "messages"
+            )
         )
 
     loggers = []
@@ -58,11 +90,14 @@ def start_mailing(ready_mailings: Optional[QuerySet] = None) -> None:
 
 def start_single_mailing(mailing: MailingSettings) -> None:
     """Запуск одной рассылки"""
-    mailing: QuerySet = MailingSettings.objects.filter(pk=mailing.id).prefetch_related(
-        "clients", "messages"
+
+    mailing: QuerySet = (
+        MailingSettings.objects
+        .filter(pk=mailing.id)
+        .prefetch_related("clients", "messages")
     )
 
-    mailing_instance: MailingSettings = mailing.get()
+    mailing_instance: MailingSettings = mailing.first()
 
     if mailing_instance.time <= timezone.now() < mailing_instance.next_time:
         start_mailing(ready_mailings=mailing)

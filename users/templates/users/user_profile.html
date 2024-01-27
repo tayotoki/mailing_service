@@ -1,0 +1,7 @@
+{% extends "mailing/base.html" %}
+
+{% block content %}
+    {{ object.email }}
+    
+    <a class="btn btn-primary mt-lg-5" role="button" href="{% url 'users:users-logout' %}">Выйти</a>
+{% endblock %}

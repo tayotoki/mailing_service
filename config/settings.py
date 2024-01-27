@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mailing.apps.MailingConfig',
+    'users.apps.UsersConfig',
 
     'ckeditor',
     'ckeditor_uploader',
@@ -157,8 +158,45 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 #CRONJOBS
 CRONJOBS = [
     ("0 * * * *", "mailing.cron.start_mailing_cron"),
 ]
+
+
+AUTH_USER_MODEL = "users.User"
+LOGIN_URL = "/users/login"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': 'debug.log'
+        }
+    },
+    'loggers': {
+        'mailing': {
+            'level': 'INFO',
+            'handlers': ['console',]
+        }
+    }
+}

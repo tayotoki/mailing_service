@@ -8,6 +8,7 @@ class MailingQuerySet(QuerySet):
     def ready_for_sending(self):
         """Возвращает кверисет запущенных рассылок,
         которые готовы к отправке"""
+
         return self.filter(Q(time__lte=timezone.now()) & Q(status=MailingStatus.LAUNCHED))
 
     def mailings_count(self) -> int:

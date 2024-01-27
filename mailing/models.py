@@ -8,10 +8,24 @@ from django.utils import timezone
 from django.utils.datetime_safe import datetime
 
 from common.models import NULLABLE
+from users.models import User
 
 from .constants import MailingStatus, MailingPeriodicity
 from .querysets import mailings, clients
 from common.utils import datetime_format
+
+
+class ModelWithOwner(models.Model):
+    owner = models.ForeignKey(
+        User,
+        verbose_name="пользователь",
+        on_delete=models.CASCADE,
+        null=True,
+        editable=False
+    )
+
+    class Meta:
+        abstract = True
 
 
 class Client(models.Model):
@@ -20,6 +34,13 @@ class Client(models.Model):
     email = models.EmailField(unique=True, verbose_name='почта')
     fullname = models.CharField(max_length=150, verbose_name='Ф.И.О.')
     comment = models.TextField(verbose_name='комментарий', **NULLABLE)
+    owner = models.ForeignKey(
+        User,
+        verbose_name="пользователь",
+        on_delete=models.CASCADE,
+        null=True,
+        editable=False
+    )
 
     objects = clients.ClientQuerySet().as_manager()
 

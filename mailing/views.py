@@ -1,4 +1,5 @@
-from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic, View
 
 from .forms.mailing import ClientForm, MessageForm
 from .models import MailingSettings, Client, MailMessage
@@ -17,48 +18,52 @@ class MailingListView(generic.ListView):
         return context
 
 
-class MailingDetailView(generic.DetailView):
+class MailingDetailView(LoginRequiredMixin, generic.DetailView):
     model = MailingSettings
     template_name = 'mailing/mailing_detail.html'
 
 
-class MailingCreateView(MailingCreateUpdateMixin, generic.CreateView):
+class MailingCreateView(LoginRequiredMixin, MailingCreateUpdateMixin, generic.CreateView):
     template_name = 'mailing/mailing_create.html'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class MailingUpdateView(MailingCreateUpdateMixin, generic.UpdateView):
+
+class MailingUpdateView(LoginRequiredMixin, MailingCreateUpdateMixin, generic.UpdateView):
     template_name = "mailing/mailing_update.html"
 
 
-class ClientCreateView(generic.CreateView):
+class ClientCreateView(LoginRequiredMixin, generic.CreateView):
     model = Client
     form_class = ClientForm
     template_name = "mailing/client_create.html"
 
 
-class ClientUpdateView(generic.UpdateView):
+class ClientUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Client
     form_class = ClientForm
     template_name = "mailing/client_update.html"
 
 
-class ClientDetailView(generic.DetailView):
+class ClientDetailView(LoginRequiredMixin, generic.DetailView):
     model = Client
     template_name = "mailing/client_detail.html"
 
 
-class MessageCreateView(generic.CreateView):
+class MessageCreateView(LoginRequiredMixin, generic.CreateView):
     model = MailMessage
     form_class = MessageForm
     template_name = "mailing/message_create.html"
 
 
-class MessageDetailView(generic.DetailView):
+class MessageDetailView(LoginRequiredMixin, generic.DetailView):
     model = MailMessage
     template_name = "mailing/message_detail.html"
 
 
-class MessageUpdateView(generic.UpdateView):
+class MessageUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = MailMessage
     form_class = MessageForm
     template_name = "mailing/message_update.html"
