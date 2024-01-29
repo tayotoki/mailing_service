@@ -4,16 +4,17 @@
     <h6 class="mb-5">{{ user.email }}</h6>
     
     <div class="list-group">
-    
+
         {% for current_user in object_list %}
             <a class="list-group-item" href="{% url 'users:users-profile' current_user.pk %}">{{ current_user }}
                 {% if not current_user.is_active %}
                     <p class="rounded-pill bg-danger p-1">заблокирован</p>
                 {% endif %}
             </a>
-            
+
         {% endfor %}
     </div>
     
     
     {% include "mailing/paginator.html" %}
+{% endblock %}
