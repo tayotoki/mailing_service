@@ -9,7 +9,9 @@
             <p class="card-text">Почта: {{ object.email }}</p>
             <p class="card-text">ФИО: {{ object.fullname }}</p>
             <p class="card-text">Комментарий: {{ object.comment }}</p>
-            <a href="{% url 'mailing:client-update' object.pk %}" class="btn btn-primary">Изменить</a>
+            {% if user == object.owner %}
+                <a href="{% url 'mailing:client-update' object.pk %}" class="btn btn-primary">Изменить</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

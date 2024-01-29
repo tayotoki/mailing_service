@@ -50,6 +50,16 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField("User", on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return f"{self.user.username}"
+
+    def get_absolute_url(self):
+        return reverse_lazy("users:users-profile", kwargs={"pk": self.pk})
+
+
 class User(AbstractUser):
     username = None
 
@@ -59,9 +69,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-
-    def get_absolute_url(self):
-        return reverse_lazy("users:users-profile", kwargs={"pk": self.pk})
 
 
 class ConfirmationCode(models.Model):

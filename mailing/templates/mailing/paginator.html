@@ -1,0 +1,25 @@
+<div class="d-flex align-items-center justify-content-center">
+    {% if is_paginated %}
+        {% if page_obj.has_other_pages %}
+            <div class="btn-group mt-4 mb-5" role="group" aria-label="Item pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="prev">&laquo;</a>
+                {% endif %}
+
+                {% for page_number in page_obj.paginator.page_range %}
+                    {% if page_obj.number == page_number %}
+                        <a href="#" class="active">{{ page_number }}</a>
+                    {% else %}
+                        <a href="?page={{ page_number }}">
+                            {{ page_number }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="next">&raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

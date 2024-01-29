@@ -1,13 +1,14 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from .views import RegisterView, UserProfileView, ConfirmationCodeView
+from .views import RegisterView, UserProfileView, ConfirmationCodeView, UserListView
 from .apps import UsersConfig
 from .forms import AuthForm
 
 app_name = UsersConfig.name
 
 urlpatterns = [
+    path("", UserListView.as_view(), name="users-list"),
     path("register/", RegisterView.as_view(), name="users-register"),
     path(
         "login/", LoginView.as_view(

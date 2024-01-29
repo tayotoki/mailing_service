@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from .views import (
     MailingListView,
@@ -10,7 +10,7 @@ from .views import (
     ClientUpdateView,
     MessageCreateView,
     MessageDetailView,
-    MessageUpdateView,
+    MessageUpdateView, MailingUserListView, ClientListView, MessageListView
 )
 from .apps import MailingConfig
 
@@ -28,4 +28,7 @@ urlpatterns = [
     path('messages/create', MessageCreateView.as_view(), name='message-create'),
     path('messages/edit/<int:pk>/', MessageUpdateView.as_view(), name='message-update'),
     path('messages/<int:pk>/', MessageDetailView.as_view(), name='message-detail'),
+    path("messages/", MessageListView.as_view(), name='message-list'),
+    re_path(r"mailings/(?P<user>user=\d+)?", MailingUserListView.as_view(), name="mailing-list"),
+    path("clients/", ClientListView.as_view(), name="client-list"),
 ]

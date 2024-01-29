@@ -9,10 +9,17 @@ class MailingQuerySet(QuerySet):
         """Возвращает кверисет запущенных рассылок,
         которые готовы к отправке"""
 
-        return self.filter(Q(time__lte=timezone.now()) & Q(status=MailingStatus.LAUNCHED))
+        return self.filter(
+            Q(time__lte=timezone.now())
+            & Q(status=MailingStatus.LAUNCHED)
+            & Q(is_active=True)
+        )
 
     def mailings_count(self) -> int:
         return self.all().count()
 
     def active_mailings_count(self) -> int:
-        return self.filter(status=MailingStatus.LAUNCHED).count()
+        return self.filter(
+            status=MailingStatus.LAUNCHED,
+            is_active=True
+        ).count()

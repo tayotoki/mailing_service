@@ -1,10 +1,11 @@
 import uuid
 
 from django.contrib.auth import login
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from .models import User, ConfirmationCode
+from .models import User
 from .services.email_confirm import generate_random_code, send_confirmation_email, bind_user_and_code
 
 
@@ -29,3 +30,8 @@ class ConfirmationCodeMixin:
         bind_user_and_code(user=user, code=confirmation_code)
 
         return redirect(reverse("users:users-confirm", kwargs={"uuid": uuid.uuid4()}))  # unique link
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff

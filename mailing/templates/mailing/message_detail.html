@@ -10,7 +10,9 @@
             <div class="card-text">Наполнение:
                 <p>{{ object.body|striptags }}</p>
             </div>
-            <a href="{% url 'mailing:message-update' object.pk %}" class="btn btn-primary">Изменить</a>
+            {% if user == object.onwer %}
+                <a href="{% url 'mailing:message-update' object.pk %}" class="btn btn-primary">Изменить</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

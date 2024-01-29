@@ -1,0 +1,15 @@
+{% extends "mailing/base.html" %}
+
+{% block content %}
+    <h6 class="mb-5">{{ user.email }}</h6>
+    
+    <div class="list-group">
+        {% for client in object_list %}
+            <a class="list-group-item" href="{% url 'mailing:client-detail' client.pk %}">{{ client }}</a>
+        {% endfor %}
+    </div>
+    
+    <a class="btn btn-primary mt-lg-5 bg-success border-success" role="button" href="{% url 'mailing:client-create' %}">Добавить клиента</a>
+    
+    {% include "mailing/paginator.html" %}
+{% endblock %}

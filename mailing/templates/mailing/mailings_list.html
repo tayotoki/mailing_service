@@ -1,0 +1,24 @@
+{% extends "mailing/base.html" %}
+
+{% block content %}
+    <h6 class="mb-5">{{ user.email }}</h6>
+
+    <div class="list-group">
+        {% for mailing in object_list %}
+            <div class="d-flex justify-content-between align-items-stretch mt-2">
+                <a class="list-group-item mx-1" href="{% url 'mailing:mailing-detail' mailing.pk %}">{{ mailing }}</a>
+                <a class="list-group-item mx-1"
+                   href="{% url 'users:users-profile' mailing.owner.pk %}">{{ mailing.owner }}</a>
+                {% if mailing.is_active == False %}
+                    <p class="rounded-pill bg-danger p-2 mx-auto">х</p>
+                {% else %}
+                    <p class="rounded-pill bg-success p-1 mx-auto">{{ mailing.get_status_display }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <a class="btn btn-primary mt-lg-5 bg-success border-success" role="button"
+       href="{% url 'mailing:mailing-create' %}">Добавить рассылку</a>
+    {% include 'mailing/paginator.html' %}
+{% endblock %}

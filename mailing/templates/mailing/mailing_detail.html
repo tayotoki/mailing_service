@@ -11,7 +11,9 @@
                     <p class="card-text">Время рассылки: {{ object.time }}</p>
                     <p class="card-text">Периодичность: {{ object.get_periodicity_display }}</p>
                     <p class="card-text">Следующая рассылка: {{ object.next_time }}</p>
-                    <a href="{% url 'mailing:mailing-update' object.pk %}" class="btn btn-primary">Изменить</a>
+                    {% if user == object.owner %}
+                        <a href="{% url 'mailing:mailing-update' object.pk %}" class="btn btn-primary">Изменить</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -58,5 +60,16 @@
                 </div>
             </div>
         </div>
+    {% if user.is_staff %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            {% if object.is_active == True %}
+                <button type="submit" class="btn btn-danger mt-4">Заблокировать рассылку</button>
+            {% else %}
+                <button type="submit" class="btn btn-success mt-4">Разблокировать рассылку</button>
+            {% endif %}
+        </form>
+    {% endif %}
     </div>
 {% endblock %}

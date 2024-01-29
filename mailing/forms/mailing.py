@@ -21,12 +21,6 @@ class ClientForm(forms.ModelForm):
         fields = "__all__"
 
 
-class MessageForm(forms.ModelForm):
-    class Meta:
-        model = MailMessage
-        fields = "__all__"
-
-
 class MailingSettingsForm(forms.ModelForm):
     time = SplitDateTimeField(
         widget=SplitDateTimeWidget(
@@ -40,7 +34,7 @@ class MailingSettingsForm(forms.ModelForm):
 
     class Meta:
         model = MailingSettings
-        exclude = "__all__"
+        exclude = ("is_active",)
 
         widgets = {
             "messages": SelectMultiple(
@@ -58,3 +52,9 @@ class MailingSettingsForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class MailingBlockForm(forms.ModelForm):
+    class Meta:
+        model = MailingSettings
+        fields = ("is_active",)

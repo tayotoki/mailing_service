@@ -28,19 +28,12 @@ class ModelWithOwner(models.Model):
         abstract = True
 
 
-class Client(models.Model):
+class Client(ModelWithOwner):
     """Клиент"""
 
     email = models.EmailField(unique=True, verbose_name='почта')
     fullname = models.CharField(max_length=150, verbose_name='Ф.И.О.')
     comment = models.TextField(verbose_name='комментарий', **NULLABLE)
-    owner = models.ForeignKey(
-        User,
-        verbose_name="пользователь",
-        on_delete=models.CASCADE,
-        null=True,
-        editable=False
-    )
 
     objects = clients.ClientQuerySet().as_manager()
 
@@ -55,7 +48,7 @@ class Client(models.Model):
         return reverse_lazy('mailing:client-detail', kwargs={'pk': self.pk})
 
 
-class MailMessage(models.Model):
+class MailMessage(ModelWithOwner):
     """Наполнение рассылки"""
 
     title = models.CharField(max_length=150, verbose_name='тема письма')
@@ -95,7 +88,7 @@ class MailLogger(models.Model):
         verbose_name_plural = 'Логи рассылки'
 
 
-class MailingSettings(models.Model):
+class MailingSettings(ModelWithOwner):
     """Настройка рассылки"""
 
     time = models.DateTimeField(verbose_name='время рассылки', default=timezone.now)
@@ -119,6 +112,8 @@ class MailingSettings(models.Model):
         MailMessage, verbose_name='сообщения', related_name='mailings', related_query_name='mailing'
     )
 
+    is_active = models.BooleanField(default=True, verbose_name="активна")
+
     objects = mailings.MailingQuerySet.as_manager()
 
     @property
@@ -134,6 +129,7 @@ class MailingSettings(models.Model):
     class Meta:
         verbose_name = 'Настройка рассылки'
         verbose_name_plural = 'Настройки рассылки'
+        ordering = ("-pk",)
 
     def get_absolute_url(self):
         return reverse_lazy('mailing:mailing-detail', kwargs={'pk': self.pk})

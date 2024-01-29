@@ -1,7 +1,30 @@
 {% extends "mailing/base.html" %}
 
 {% block content %}
-    {{ object.email }}
-    
-    <a class="btn btn-primary mt-lg-5" role="button" href="{% url 'users:users-logout' %}">Выйти</a>
+    <h6 class="mb-5">{{ object.user.email }}</h6>
+
+    <div class="list-group">
+    {% if user != object.user and user.is_staff %}
+        <a class="list-group-item" href="{% url 'mailing:mailing-list' user=object.user.pk %}">Рассылки</a>
+    {% else %}
+        <a class="list-group-item" href="{% url 'mailing:mailing-list' %}">Рассылки</a>
+    {% endif %}
+        <a class="list-group-item" href="{% url 'mailing:client-list' %}">Клиенты</a>
+        {% if user.is_staff and object.user == user %}
+            <a class="list-group-item" href="{% url 'users:users-list' %}">Пользователи</a>
+        {% endif %}
+        <a class="list-group-item" href="{% url 'mailing:message-list' %}">Сообщения</a>
+    </div>
+
+    {% if not staff and not other_user %}
+        <a class="btn btn-primary mt-lg-5 bg-danger border-danger" role="button" href="{% url 'users:users-logout' %}">Выйти</a>
+    {% elif not object.user.is_active %}
+        <span class="rounded-pill border border-danger mt-4">Пользователь заблокирован</span>
+    {% elif staff %}
+        <form method="post">
+        {% csrf_token %}
+            <button type="submit" class="btn btn-danger mt-4">Заблокировать пользователя</button>
+        </form>
+    {% endif %}
 {% endblock %}
+
