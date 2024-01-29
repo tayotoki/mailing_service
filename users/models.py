@@ -13,9 +13,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("The given username must be set")
         email = self.normalize_email(email)
-        GlobalUserModel = apps.get_model(
-            self.model._meta.app_label, self.model._meta.object_name
-        )
+        GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
         email = GlobalUserModel.normalize_username(email)
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)

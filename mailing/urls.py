@@ -10,7 +10,10 @@ from .views import (
     ClientUpdateView,
     MessageCreateView,
     MessageDetailView,
-    MessageUpdateView, MailingUserListView, ClientListView, MessageListView
+    MessageUpdateView,
+    MailingUserListView,
+    ClientListView,
+    MessageListView,
 )
 from .apps import MailingConfig
 

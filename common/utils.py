@@ -21,4 +21,5 @@ def datetime_format(format: str = "%d.%m.%Y %H:%M", fail_silently: bool = False)
             return time
 
         return wrapper
+
     return decorator

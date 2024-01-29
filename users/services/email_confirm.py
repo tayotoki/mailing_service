@@ -20,7 +20,7 @@ def send_confirmation_email(code: int, user: User) -> None:
         ),
         from_email="mail_service@localhost",
         recipient_list=[user.email],
-        fail_silently=False
+        fail_silently=False,
     )
 
 
@@ -28,6 +28,3 @@ def bind_user_and_code(user: User, code: int) -> None:
     user.save()
     confirmation_instance = ConfirmationCode(user=user, code=code)
     confirmation_instance.save()
-
-
-

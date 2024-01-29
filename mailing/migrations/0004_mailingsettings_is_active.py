@@ -12,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="mailingsettings",
             name="is_active",
-            field=models.BooleanField(
-                default=True, editable=False, verbose_name="активна"
-            ),
+            field=models.BooleanField(default=True, editable=False, verbose_name="активна"),
         ),
     ]

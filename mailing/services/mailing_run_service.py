@@ -15,11 +15,13 @@ logger_ = logging.getLogger('mailing')
 
 
 @keep_mail_backend_connection
-def send_email(clients: Sequence[Mapping[str, Any]],
-               message: MailMessage,
-               loggers: Optional[list[MailLogger]] = None,
-               connection=None,
-               commit=False) -> None:
+def send_email(
+    clients: Sequence[Mapping[str, Any]],
+    message: MailMessage,
+    loggers: Optional[list[MailLogger]] = None,
+    connection=None,
+    commit=False,
+) -> None:
     """Отправка конкретного сообщения клиентам.
     Создаются объекты-логгеры для каждого сообщения.
     Если commit=True - логгеры сохраняются в БД"""
@@ -35,7 +37,7 @@ def send_email(clients: Sequence[Mapping[str, Any]],
             message=message.body,
             from_email="mail_service@localhost",
             recipient_list=[client["email"] for client in clients],
-            connection=connection
+            connection=connection,
         )
 
     except Exception as e:
@@ -52,10 +54,10 @@ def send_email(clients: Sequence[Mapping[str, Any]],
         MailLogger.objects.bulk_create(loggers)
 
     logger_.info(
-            f"[{logger.time}] "
-            f"message: {logger.message} | "
-            f"status: {logger.status} | "
-            f"response: {logger.mail_backend_response}"
+        f"[{logger.time}] "
+        f"message: {logger.message} | "
+        f"status: {logger.status} | "
+        f"response: {logger.mail_backend_response}"
     )
 
 
@@ -64,12 +66,8 @@ def start_mailing(ready_mailings: Optional[QuerySet[MailingSettings]] = None) ->
     Создаются записи в базе данных для всех логгеров сообщений"""
 
     if ready_mailings is None:
-        ready_mailings = (
-            MailingSettings.objects
-            .ready_for_sending()
-            .prefetch_related(
-                "clients", "messages"
-            )
+        ready_mailings = MailingSettings.objects.ready_for_sending().prefetch_related(
+            "clients", "messages"
         )
 
     loggers = []
@@ -91,10 +89,8 @@ def start_mailing(ready_mailings: Optional[QuerySet[MailingSettings]] = None) ->
 def start_single_mailing(mailing: MailingSettings) -> None:
     """Запуск одной рассылки"""
 
-    mailing: QuerySet = (
-        MailingSettings.objects
-        .filter(pk=mailing.id)
-        .prefetch_related("clients", "messages")
+    mailing: QuerySet = MailingSettings.objects.filter(pk=mailing.id).prefetch_related(
+        "clients", "messages"
     )
 
     mailing_instance: MailingSettings = mailing.first()

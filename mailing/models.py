@@ -17,11 +17,7 @@ from common.utils import datetime_format
 
 class ModelWithOwner(models.Model):
     owner = models.ForeignKey(
-        User,
-        verbose_name="пользователь",
-        on_delete=models.CASCADE,
-        null=True,
-        editable=False
+        User, verbose_name="пользователь", on_delete=models.CASCADE, null=True, editable=False
     )
 
     class Meta:

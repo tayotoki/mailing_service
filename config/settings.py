@@ -42,10 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'mailing.apps.MailingConfig',
     'users.apps.UsersConfig',
-
     'ckeditor',
     'ckeditor_uploader',
     'django_crontab',
@@ -161,7 +159,7 @@ EMAIL_USE_SSL = False
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-#CRONJOBS
+# CRONJOBS
 CRONJOBS = [
     ("0 * * * *", "mailing.cron.start_mailing_cron"),
 ]
@@ -174,29 +172,24 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'console': {
-            'format': '%(name)-12s %(levelname)-8s %(message)s'
-        },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-        }
+        'console': {'format': '%(name)-12s %(levelname)-8s %(message)s'},
+        'file': {'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'},
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console'
-        },
+        'console': {'class': 'logging.StreamHandler', 'formatter': 'console'},
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'file',
-            'filename': 'debug.log'
-        }
+            'filename': 'debug.log',
+        },
     },
     'loggers': {
         'mailing': {
             'level': 'INFO',
-            'handlers': ['console',]
+            'handlers': [
+                'console',
+            ],
         }
-    }
+    },
 }

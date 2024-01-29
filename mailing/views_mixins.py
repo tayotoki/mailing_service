@@ -27,11 +27,7 @@ class ForOwnerOrStufOnlyMixin:
             return self.handle_no_permission()
 
         if not self.request.user.is_staff:
-            return (
-                self.model.objects
-                .filter(default_filter)
-                .select_related("owner")
-            )
+            return self.model.objects.filter(default_filter).select_related("owner")
 
         return self.model.objects.filter(owner__is_staff=False).select_related("owner")
 

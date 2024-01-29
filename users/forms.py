@@ -38,10 +38,7 @@ class ConfirmationCodeForm(forms.ModelForm):
         fields = ("code",)
 
     def clean_code(self):
-        code_queryset = (
-            ConfirmationCode.objects
-            .filter(code__exact=self.cleaned_data.get("code"))
-        )
+        code_queryset = ConfirmationCode.objects.filter(code__exact=self.cleaned_data.get("code"))
 
         if not code_queryset.exists():
             raise ValidationError("Вы ввели неправильный код")

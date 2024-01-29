@@ -11,12 +11,14 @@ urlpatterns = [
     path("", UserListView.as_view(), name="users-list"),
     path("register/", RegisterView.as_view(), name="users-register"),
     path(
-        "login/", LoginView.as_view(
+        "login/",
+        LoginView.as_view(
             template_name="users/user_login.html",
             authentication_form=AuthForm,
             redirect_authenticated_user=True,
-            next_page="/"
-        ), name="users-login"
+            next_page="/",
+        ),
+        name="users-login",
     ),
     path("logout/", LogoutView.as_view(next_page="/"), name="users-logout"),
     path("profile/<int:pk>", UserProfileView.as_view(), name="users-profile"),

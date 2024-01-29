@@ -10,9 +10,7 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = MailMessage
         fields = "__all__"
-        widgets = {
-            "body": widgets.CKEditorWidget()
-        }
+        widgets = {"body": widgets.CKEditorWidget()}
 
 
 class ClientForm(forms.ModelForm):

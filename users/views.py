@@ -40,7 +40,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
             (
                 self.request.user.is_staff,
                 self.request.user != self.get_object().user,
-                not self.get_object().user.is_staff
+                not self.get_object().user.is_staff,
             )
         ):
             staff = True
