@@ -1,8 +1,13 @@
+from typing import Type
+
 from django.db.models import Prefetch, Q
 
 from .forms.mailing import MailingSettingsForm
 from .models import MailingSettings, Client, MailMessage
 from .services import mailing_run_service
+
+
+ModelsWithOwners = Type[Client | MailMessage | MailingSettings]
 
 
 class MailingCreateUpdateMixin:
@@ -15,6 +20,8 @@ class MailingCreateUpdateMixin:
 
 
 class ForOwnerOrStufOnlyMixin:
+    model: ModelsWithOwners
+
     def get_queryset(self):
         user_filter = self.request.GET.get('user')
 
@@ -33,12 +40,18 @@ class ForOwnerOrStufOnlyMixin:
 
 
 class BindOwnerMixin:
+    """Миксин для привязки объекта к пользователю
+    после проверки формы"""
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
 class LimitedFormMixin:
+    """Миксин для ограничения выбора в формах
+    объектов, привязанных к данному пользователю"""
+
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
@@ -54,6 +67,9 @@ class LimitedFormMixin:
 
 
 class RelatedQuerySetMixin:
+    """Миксин для получения кверисета настроек рассылок,
+     связанных с пользователем (также как и клиентов и сообщений)"""
+
     def get_queryset(self):
         q = Q(owner=self.request.user)
 

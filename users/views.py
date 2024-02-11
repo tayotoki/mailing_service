@@ -30,6 +30,8 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     model = UserProfile
     template_name = "users/user_profile.html"
 
+    # TODO: пересмотреть шаблоны, убрать переопределение методов (костыль).
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

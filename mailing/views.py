@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -110,3 +111,18 @@ class MessageListView(ForOwnerOrStufOnlyMixin, LoginRequiredMixin, generic.ListV
     model = MailMessage
     template_name = "mailing/messages_list.html"
     paginate_by = 10
+
+
+class MailingDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = MailingSettings
+    success_url = reverse_lazy("mailing:mailing-list")
+
+
+class MessageDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = MailMessage
+    success_url = reverse_lazy("mailing:message-list")
+
+
+class ClientDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Client
+    success_url = reverse_lazy("mailing:client-list")

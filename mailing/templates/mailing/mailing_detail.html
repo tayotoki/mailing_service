@@ -13,63 +13,87 @@
                     <p class="card-text">Следующая рассылка: {{ object.next_time }}</p>
                     {% if user == object.owner %}
                         <a href="{% url 'mailing:mailing-update' object.pk %}" class="btn btn-primary">Изменить</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal">Удалить
+                        </button>
                     {% endif %}
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 mb-3 mb-sm-0">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <p class="d-inline-flex gap-1">
-                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseClients" role="button"
-                           aria-expanded="false" aria-controls="collapseClients">
-                            Клиенты
-                        </a>
-                    </p>
-                    <div class="collapse" id="collapseClients">
-                        <div class="card card-body">
-                            {% for client in object.clients.all %}
-                                <a href="{% url 'mailing:client-detail' client.pk %}">
-                                    <p class="card-text mt-0 mb-0">{{ client.fullname }}</p>
-                                    <p class="card-text mt-0 mb-0">({{ client.email }})</p>
-                                </a>
-                                <p class="card-text">...</p>
-                            {% endfor %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-black" id="deleteModalLabel">Подтверждение удаления</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-black">
+                            Вы уверены, что хотите удалить эту рассылку?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <form id="deleteForm" action="{% url 'mailing:mailing-delete' object.pk %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card mt-2" style="width: 18rem;">
-                <div class="card-body">
-                    <p class="d-inline-flex gap-1">
-                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMessages" role="button"
-                           aria-expanded="false" aria-controls="collapseMessages">
-                            Сообщения
-                        </a>
-                    </p>
-                    <div class="collapse" id="collapseMessages">
-                        <div class="card card-body">
-                            {% for message in object.messages.all %}
-                                <a href="{% url 'mailing:message-detail' message.pk %}">
-                                    <p class="card-text mt-0 mb-0">{{ message.title }}</p>
-                                </a>
-                                <p class="card-text">...</p>
-                            {% endfor %}
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseClients" role="button"
+                               aria-expanded="false" aria-controls="collapseClients">
+                                Клиенты
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapseClients">
+                            <div class="card card-body">
+                                {% for client in object.clients.all %}
+                                    <a href="{% url 'mailing:client-detail' client.pk %}">
+                                        <p class="card-text mt-0 mb-0">{{ client.fullname }}</p>
+                                        <p class="card-text mt-0 mb-0">({{ client.email }})</p>
+                                    </a>
+                                    <p class="card-text">...</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMessages" role="button"
+                               aria-expanded="false" aria-controls="collapseMessages">
+                                Сообщения
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapseMessages">
+                            <div class="card card-body">
+                                {% for message in object.messages.all %}
+                                    <a href="{% url 'mailing:message-detail' message.pk %}">
+                                        <p class="card-text mt-0 mb-0">{{ message.title }}</p>
+                                    </a>
+                                    <p class="card-text">...</p>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% if user.is_staff %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            {% if object.is_active == True %}
-                <button type="submit" class="btn btn-danger mt-4">Заблокировать рассылку</button>
-            {% else %}
-                <button type="submit" class="btn btn-success mt-4">Разблокировать рассылку</button>
+            {% if user.is_staff %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    {% if object.is_active == True %}
+                        <button type="submit" class="btn btn-danger mt-4">Заблокировать рассылку</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-success mt-4">Разблокировать рассылку</button>
+                    {% endif %}
+                </form>
             {% endif %}
-        </form>
-    {% endif %}
-    </div>
+        </div>
 {% endblock %}

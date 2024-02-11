@@ -10,9 +10,33 @@
             <div class="card-text">Наполнение:
                 <p>{{ object.body|striptags }}</p>
             </div>
-            {% if user == object.onwer %}
+            {% if user == object.owner %}
                 <a href="{% url 'mailing:message-update' object.pk %}" class="btn btn-primary">Изменить</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    Удалить
+                </button>
             {% endif %}
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-black" id="deleteModalLabel">Подтверждение удаления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-black">
+                    Вы уверены, что хотите удалить это сообщение?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <form id="deleteForm" action="{% url 'mailing:message-delete' object.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

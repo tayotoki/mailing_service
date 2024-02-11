@@ -13,7 +13,7 @@ from .views import (
     MessageUpdateView,
     MailingUserListView,
     ClientListView,
-    MessageListView,
+    MessageListView, ClientDeleteView, MailingDeleteView, MessageDeleteView,
 )
 from .apps import MailingConfig
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('mailings/<int:pk>/', MailingDetailView.as_view(), name='mailing-detail'),
     path('mailings/create/', MailingCreateView.as_view(), name='mailing-create'),
     path('mailings/edit/<int:pk>/', MailingUpdateView.as_view(), name='mailing-update'),
+    path("mailings/<int:pk>/delete", MailingDeleteView.as_view(), name='mailing-delete'),
     path('client/create', ClientCreateView.as_view(), name='client-create'),
     path('client/<int:pk>/', ClientDetailView.as_view(), name='client-detail'),
     path('client/edit/<int:pk>/', ClientUpdateView.as_view(), name='client-update'),
@@ -32,6 +33,8 @@ urlpatterns = [
     path('messages/edit/<int:pk>/', MessageUpdateView.as_view(), name='message-update'),
     path('messages/<int:pk>/', MessageDetailView.as_view(), name='message-detail'),
     path("messages/", MessageListView.as_view(), name='message-list'),
+    path("messages/<int:pk>/delete", MessageDeleteView.as_view(), name='message-delete'),
     re_path(r"mailings/(?P<user>user=\d+)?", MailingUserListView.as_view(), name="mailing-list"),
     path("clients/", ClientListView.as_view(), name="client-list"),
+    path("client/<int:pk>/delete", ClientDeleteView.as_view(), name="client-delete")
 ]
