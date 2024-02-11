@@ -5,6 +5,7 @@ from typing import Optional, Any
 
 from django.core.mail import send_mail
 from django.db.models import F, QuerySet
+from django.http import QueryDict
 from django.utils import timezone
 
 from ..models import MailingSettings, MailLogger, MailMessage
@@ -16,7 +17,7 @@ logger_ = logging.getLogger('mailing')
 
 @keep_mail_backend_connection
 def send_email(
-    clients: Sequence[Mapping[str, Any]],
+    clients: Sequence[Mapping[str, Any]] | QueryDict,
     message: MailMessage,
     loggers: Optional[list[MailLogger]] = None,
     connection=None,

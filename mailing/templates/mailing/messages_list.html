@@ -5,7 +5,7 @@
     
     <div class="list-group">
         {% for message in object_list %}
-            <a class="list-group-item" href="{% url 'mailing:message-detail-detail' message.pk %}">{{ message }}</a>
+            <a class="list-group-item" href="{% url 'mailing:message-detail' message.pk %}">{{ message }}</a>
         {% endfor %}
     </div>
 
