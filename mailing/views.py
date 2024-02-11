@@ -1,9 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.core.cache import cache
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
+from django.views.decorators.cache import cache_page
 
+from blog.models import Post
 from .forms.mailing import ClientForm, MessageForm, MailingBlockForm
 from .models import MailingSettings, Client, MailMessage
 from .views_mixins import (
@@ -21,9 +25,21 @@ class MailingListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["mailings_count"] = self.model.objects.mailings_count()
-        context["active_mailings_count"] = self.model.objects.active_mailings_count()
-        context["unique_clients_count"] = Client.objects.unique_clients().count()
+
+        cache_key = "extra_context"
+        extra_context = cache.get(cache_key)
+
+        if not extra_context:
+            extra_context = {
+                "mailings_count": self.model.objects.mailings_count(),
+                "active_mailings_count": self.model.objects.active_mailings_count(),
+                "unique_clients_count": Client.objects.unique_clients().count(),
+                "random_blog_posts": Post.posts.random_blog_posts(count=3)
+            }
+            cache.set(cache_key, extra_context, 60*10)
+
+        context.update(extra_context)
+
         return context
 
 

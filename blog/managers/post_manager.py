@@ -9,6 +9,9 @@ class PostsManager(models.Manager):
         """Return queryset with only published posts"""
         return self.get_queryset().filter(is_published=True)
 
+    def random_blog_posts(self, count=3):
+        return self.published().order_by('?')[:count]
+
     def not_published(self):
         return self.get_queryset().filter(is_published=False)
 

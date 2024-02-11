@@ -17,5 +17,21 @@
     <p class="lead">
       <a href="{% url 'mailing:mailing-create' %}" class="btn btn-lg btn-light fw-bold border-white bg-white">Создать рассылку</a>
     </p>
+
+    <div class="row">
+        {% for post in random_blog_posts %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ post.preview.url }}" class="card-img-top" alt="{{ post.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">
+                        <i class="bi bi-eye-fill"></i> {{ post.views_count }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
   </main>
 {% endblock %}
