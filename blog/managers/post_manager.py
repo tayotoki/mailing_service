@@ -20,10 +20,11 @@ class PostsManager(models.Manager):
         return self.published().order_by("-views_count")[:5]
 
     def get_search_results(self, search_term):
-        return self.published().filter(
-            Q(title__iregex=search_term) |
-            Q(content__icontains=search_term)
-        ).order_by("-created_at")
+        return (
+            self.published()
+            .filter(Q(title__iregex=search_term) | Q(content__icontains=search_term))
+            .order_by("-created_at")
+        )
 
     def update_views(self, pk: int | Sequence[int]):
         """Increase post | posts views_count field by 1"""

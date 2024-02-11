@@ -25,9 +25,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=254, unique=True, verbose_name="почта"
-                    ),
+                    models.EmailField(max_length=254, unique=True, verbose_name="почта"),
                 ),
                 ("fullname", models.CharField(max_length=150, verbose_name="Ф.И.О.")),
                 (
@@ -118,9 +116,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "mail_backend_response",
-                    models.CharField(
-                        max_length=150, verbose_name="ответ почтового сервера"
-                    ),
+                    models.CharField(max_length=150, verbose_name="ответ почтового сервера"),
                 ),
             ],
             options={

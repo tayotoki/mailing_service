@@ -68,7 +68,7 @@ class LimitedFormMixin:
 
 class RelatedQuerySetMixin:
     """Миксин для получения кверисета настроек рассылок,
-     связанных с пользователем (также как и клиентов и сообщений)"""
+    связанных с пользователем (также как и клиентов и сообщений)"""
 
     def get_queryset(self):
         q = Q(owner=self.request.user)

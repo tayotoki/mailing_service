@@ -13,7 +13,10 @@ from .views import (
     MessageUpdateView,
     MailingUserListView,
     ClientListView,
-    MessageListView, ClientDeleteView, MailingDeleteView, MessageDeleteView,
+    MessageListView,
+    ClientDeleteView,
+    MailingDeleteView,
+    MessageDeleteView,
 )
 from .apps import MailingConfig
 
@@ -36,5 +39,5 @@ urlpatterns = [
     path("messages/<int:pk>/delete", MessageDeleteView.as_view(), name='message-delete'),
     re_path(r"mailings/(?P<user>user=\d+)?", MailingUserListView.as_view(), name="mailing-list"),
     path("clients/", ClientListView.as_view(), name="client-list"),
-    path("client/<int:pk>/delete", ClientDeleteView.as_view(), name="client-delete")
+    path("client/<int:pk>/delete", ClientDeleteView.as_view(), name="client-delete"),
 ]

@@ -44,9 +44,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "views_count",
-                    models.PositiveIntegerField(
-                        default=0, verbose_name="Количество просмотров"
-                    ),
+                    models.PositiveIntegerField(default=0, verbose_name="Количество просмотров"),
                 ),
             ],
             options={

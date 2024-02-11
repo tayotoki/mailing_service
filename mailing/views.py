@@ -34,9 +34,9 @@ class MailingListView(generic.ListView):
                 "mailings_count": self.model.objects.mailings_count(),
                 "active_mailings_count": self.model.objects.active_mailings_count(),
                 "unique_clients_count": Client.objects.unique_clients().count(),
-                "random_blog_posts": Post.posts.random_blog_posts(count=3)
+                "random_blog_posts": Post.posts.random_blog_posts(count=3),
             }
-            cache.set(cache_key, extra_context, 60*10)
+            cache.set(cache_key, extra_context, 60 * 10)
 
         context.update(extra_context)
 
