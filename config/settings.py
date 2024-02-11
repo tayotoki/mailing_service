@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mailing.apps.MailingConfig',
+    'blog.apps.BlogConfig',
 
     'ckeditor',
     'ckeditor_uploader',
