@@ -164,7 +164,7 @@ if DEBUG:
 
 # CRONJOBS
 CRONJOBS = [
-    ("0 * * * *", "mailing.cron.start_mailing_cron"),
+    ("* * * * *", "mailing.cron.start_mailing_crons"),
 ]
 
 

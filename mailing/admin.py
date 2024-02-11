@@ -1,11 +1,9 @@
 from django.contrib import admin
 
-import mailing.models
 from .models import MailingSettings, MailMessage, MailLogger, Client
 
 
 admin.site.register(MailMessage)
-admin.site.register(MailLogger)
 
 
 @admin.register(MailingSettings)
@@ -22,3 +20,8 @@ class MailingSettingsAdmin(admin.ModelAdmin):
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ("fullname", "email", "owner")
+
+
+@admin.register(MailLogger)
+class MailLoggerAdmin(admin.ModelAdmin):
+    list_display = ("time", "status", "mail_backend_response", "message")

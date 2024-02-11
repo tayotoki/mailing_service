@@ -29,7 +29,7 @@ def send_email(
 
     logger = MailLogger(time=timezone.now(), message=message, status="", mail_backend_response="")
 
-    if not loggers:
+    if loggers is None:
         loggers = []
 
     try:
