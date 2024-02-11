@@ -1,9 +1,9 @@
 .PHONY: install migrate load_data run
 
 install:
-	@poetry install
+	@poetry install --no-root
 
-migrate:
+migrate: install
 	@poetry run python manage.py migrate --check; \
     RET=$$?; \
     if [ $$RET -eq 0 ]; then \
